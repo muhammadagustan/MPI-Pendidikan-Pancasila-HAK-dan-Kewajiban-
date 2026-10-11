@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hak dan Kewajibanku - Media Pembelajaran Interaktif</title>
+<style>
+:root{
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f4f1ea;--card:#ffffff;--ink:#1c2b2a;--muted:#5b6b69;--line:#e3ded2;
+  --teal:#0f766e;--teal-d:#0b4f4a;--teal-l:#dff1ee;
+  --amber:#d98a0b;--amber-l:#fdf1d8;--rose:#c0455f;--rose-l:#fbe9ee;
+  --indigo:#3f4fa8;--indigo-l:#e8ebfa;--ok:#1b8a4b;--ok-l:#dff5e7;--bad:#c0392b;--bad-l:#fde8e5;
+  --shadow:0 6px 20px rgba(20,40,38,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1a19;--card:#172a29;--ink:#e8f1ef;--muted:#9fb5b1;--line:#2a4040;
+    --teal:#2bb3a6;--teal-d:#7fd6cc;--teal-l:#163c39;
+    --amber:#f0a62b;--amber-l:#3b2e12;--rose:#ee7d96;--rose-l:#3d1d27;
+    --indigo:#8d9bf0;--indigo-l:#1f2547;--ok:#47c77d;--ok-l:#133324;--bad:#f0786a;--bad-l:#401e1a;
+    --shadow:0 6px 20px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1a19;--card:#172a29;--ink:#e8f1ef;--muted:#9fb5b1;--line:#2a4040;
+  --teal:#2bb3a6;--teal-d:#7fd6cc;--teal-l:#163c39;
+  --amber:#f0a62b;--amber-l:#3b2e12;--rose:#ee7d96;--rose-l:#3d1d27;
+  --indigo:#8d9bf0;--indigo-l:#1f2547;--ok:#47c77d;--ok-l:#133324;--bad:#f0786a;--bad-l:#401e1a;
+  --shadow:0 6px 20px rgba(0,0,0,.35);
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:17px;line-height:1.6}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+.app{max-width:1080px;margin:0 auto;padding:14px 14px 40px}
+
+/* header */
+.hero{background:linear-gradient(135deg,#0b4f4a,#0f766e 60%,#16907f);color:#fff;border-radius:22px;padding:20px 22px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;bottom:-70px;width:190px;height:190px;border-radius:50%;background:rgba(217,138,11,.35)}
+.hero>*{position:relative;z-index:1}
+.hero small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#f6c65b}
+.hero h1{margin:2px 0 2px;font-size:clamp(24px,4.4vw,34px);line-height:1.15}
+.hero p{margin:0;color:#cfeae6;font-size:14px}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:7px 14px;font-weight:700;color:#fff;font-size:15px}
+.pill.btnp{cursor:pointer}
+.pill.on{background:#f6c65b;color:#3b2a00;border-color:#f6c65b}
+
+/* stepper */
+.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;gap:8px;overflow-x:auto;padding:12px 2px;margin:6px 0 4px;background:var(--bg);scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.step{flex:1 0 auto;min-width:112px;display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:700;color:var(--muted);text-align:left}
+.step .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--teal-l);color:var(--teal-d);font-weight:800;flex:none}
+.step .l{font-size:15px;line-height:1.1}.step .l small{display:block;font-weight:600;font-size:11px;color:var(--muted)}
+.step.active{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
+.step.active .n{background:var(--teal);color:#fff}
+.step.visited:not(.active) .n{background:var(--ok);color:#fff}
+
+/* panels */
+.panel{display:none;animation:fadeUp .35s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow);margin-top:12px}
+h2{margin:0 0 4px;font-size:26px;color:var(--teal-d)}
+h3{margin:0 0 8px;font-size:19px;color:var(--teal-d)}
+.sub{color:var(--muted);margin:0 0 14px}
+.tip{display:none;margin-top:12px;padding:12px 16px;border-radius:14px;background:var(--indigo-l);border-left:6px solid var(--indigo);font-size:15px}
+.tip b{color:var(--indigo)}
+body.guru .tip{display:block}
+.timerbox{display:none;align-items:center;gap:10px;margin-top:12px;padding:10px 14px;border-radius:14px;background:var(--amber-l);border:1px solid var(--amber);flex-wrap:wrap}
+body.guru .timerbox{display:flex}
+.timerbox .t{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--amber)}
+.timerbox.late .t{color:var(--bad)}
+.btn{border:0;background:var(--teal);color:#fff;font-weight:700;padding:12px 22px;border-radius:14px;box-shadow:0 3px 0 var(--teal-d);transition:transform .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--teal-d)}
+.btn.alt{background:var(--amber);box-shadow:0 3px 0 #9a6205;color:#fff}
+.btn.ghost{background:transparent;color:var(--teal-d);border:2px solid var(--teal);box-shadow:none}
+.btn.sm{padding:7px 14px;font-size:14px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:default}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap}
+.callout{border-radius:16px;padding:14px 18px;margin:12px 0}
+.callout.rose{background:var(--rose-l);border-left:6px solid var(--rose)}
+.callout.amber{background:var(--amber-l);border-left:6px solid var(--amber)}
+.callout.teal{background:var(--teal-l);border-left:6px solid var(--teal)}
+.callout.ok{background:var(--ok-l);border-left:6px solid var(--ok)}
+.callout.bad{background:var(--bad-l);border-left:6px solid var(--bad)}
+
+/* cerita */
+.stage{border-radius:20px;background:linear-gradient(180deg,var(--teal-l),var(--card));text-align:center;padding:26px 18px 18px;border:1px solid var(--line)}
+.stage .big{font-size:clamp(56px,12vw,96px);line-height:1.1;animation:bob 2.4s ease-in-out infinite;letter-spacing:6px}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.stage h3{font-size:22px;margin-top:8px}
+.stage .q{display:inline-block;margin-top:8px;background:var(--amber-l);border:2px dashed var(--amber);border-radius:14px;padding:10px 16px;font-weight:700}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--teal)}
+.reacts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.react{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:10px 16px;font-weight:700;min-width:120px}
+.react span{display:block;font-size:34px}
+.react.sel{border-color:var(--teal);background:var(--teal-l)}
+
+/* tanya */
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:14px 16px;margin:8px 0;font-weight:600}
+.opt .k{flex:none;width:34px;height:34px;border-radius:50%;background:var(--indigo-l);color:var(--indigo);display:grid;place-items:center;font-weight:800}
+.opt.sel{border-color:var(--indigo);background:var(--indigo-l)}
+.opt.ok{border-color:var(--ok);background:var(--ok-l)}
+.opt.bad{border-color:var(--bad);background:var(--bad-l)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--indigo-l);color:var(--indigo);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+
+/* kartu */
+.sortwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.zone{border-radius:20px;padding:12px;min-height:220px;border:3px dashed var(--line);transition:background .15s,border-color .15s}
+.zone h3{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.zone.hak{background:var(--amber-l);border-color:var(--amber)}
+.zone.kew{background:var(--teal-l);border-color:var(--teal)}
+.zone.hot{outline:4px solid var(--indigo);transform:scale(1.01)}
+.zone .cnt{font-size:14px;background:var(--card);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:12px;min-height:60px;padding:12px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.dcard{display:flex;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:600;font-size:15.5px;line-height:1.3;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.dcard .e{font-size:28px}
+.dcard.selected{border-color:var(--indigo);box-shadow:0 0 0 4px var(--indigo-l)}
+.dcard.dragging{position:fixed;z-index:60;margin:0;cursor:grabbing;transform:rotate(-2deg) scale(1.04);box-shadow:0 12px 28px rgba(0,0,0,.28)}
+.dcard.placed{cursor:default;margin-top:8px;border-color:var(--ok);background:var(--ok-l)}
+.dcard.placed::after{content:"✓";margin-left:auto;color:var(--ok);font-weight:800;font-size:20px}
+.dcard.shake{animation:shake .4s;border-color:var(--bad)}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.ph{border-radius:14px;border:2px dashed var(--line)}
+.prog{height:14px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .4s}
+
+/* olah */
+.seg{display:inline-flex;background:var(--teal-l);border-radius:14px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;border-radius:11px;padding:9px 18px;font-weight:700;color:var(--teal-d)}
+.seg button.on{background:var(--teal);color:#fff}
+.scalebox{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+.scalebox svg{width:100%;height:auto;max-height:340px}
+.pairrow{display:grid;grid-template-columns:1fr 26px 1fr;gap:6px;align-items:center;margin:7px 0}
+.pairrow .mid{text-align:center;color:var(--muted);font-weight:800}
+.wchip{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:9px 11px;font-weight:600;font-size:14.5px;text-align:left;line-height:1.25}
+.wchip.h.on{background:var(--amber);border-color:var(--amber);color:#fff}
+.wchip.k.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.mapbox{position:relative;height:420px;margin-top:10px;border-radius:20px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+.mapbox svg{position:absolute;inset:0;width:100%;height:100%}
+.mapbox svg line{stroke:var(--teal);stroke-width:3;stroke-dasharray:6 6;opacity:.6}
+.node{position:absolute;transform:translate(-50%,-50%);border:3px solid var(--teal);background:var(--teal-l);border-radius:18px;padding:9px 12px;font-weight:700;font-size:15px;text-align:center;max-width:42%;line-height:1.2;color:var(--teal-d)}
+.node.center{background:var(--teal);color:#fff;font-size:17px;cursor:default;border-color:var(--teal-d);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(15,118,110,.18)}}
+.node.seen{border-color:var(--ok);background:var(--ok-l)}
+.node.cur{box-shadow:0 0 0 5px var(--amber-l);border-color:var(--amber)}
+.detail{margin-top:12px;min-height:90px}
+.detail .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* kuis */
+.qno{color:var(--muted);font-weight:700;font-size:14px}
+.qtext{font-size:21px;font-weight:700;margin:6px 0 10px}
+.stars{font-size:34px;letter-spacing:4px}
+
+/* janji + poster */
+.pledges label{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:2px solid var(--line);border-radius:14px;margin:7px 0;background:var(--card);cursor:pointer}
+.pledges input{width:22px;height:22px;margin-top:3px;accent-color:var(--teal);flex:none}
+.field{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.field input{flex:1;min-width:200px;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.poster{margin-top:14px;border-radius:20px;padding:26px 24px;background:#fffdf6;color:#1c2b2a;border:6px double #d98a0b;text-align:center;box-shadow:var(--shadow)}
+.poster .ph1{font-size:12px;letter-spacing:.2em;font-weight:800;color:#0f766e}
+.poster h2{font-size:clamp(26px,5vw,38px);color:#0b4f4a;margin:2px 0}
+.poster .by{font-weight:700;color:#8a5600}
+.poster ol{text-align:left;max-width:640px;margin:14px auto;padding-left:24px}
+.poster li{margin:8px 0;font-size:17px}
+.poster .sig{margin-top:18px;font-size:13px;color:#5b6b69}
+.poster .sign{border-bottom:2px dotted #888;max-width:340px;height:34px;margin:6px auto}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);opacity:0;background:#1c2b2a;color:#fff;padding:12px 20px;border-radius:14px;font-weight:700;z-index:90;pointer-events:none;transition:.25s;max-width:92vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.ok{background:var(--ok)}.toast.bad{background:var(--bad)}
+.conf{position:fixed;top:-40px;z-index:99;pointer-events:none;animation:fall 2.2s ease-in forwards}
+@keyframes fall{to{transform:translateY(112vh) rotate(420deg)}}
+@media (max-width:720px){
+  .sortwrap,.scalebox,.detail .two{grid-template-columns:1fr}
+  .card{padding:16px}.mapbox{height:460px}.node{font-size:13.5px;max-width:46%}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+@media print{
+  body.print-poster .app>*:not(#printzone){display:none !important}
+  body.print-poster{background:#fff}
+  body.print-poster .hero,body.print-poster .steps,body.print-poster .nav,body.print-poster .tip,body.print-poster .timerbox{display:none !important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hero">
+    <div>
+      <small>Pendidikan Pancasila • Kelas 4 • Bab 2 Aku Anak Disiplin</small>
+      <h1>⚖️ Hak dan Kewajibanku</h1>
+      <p>Media pembelajaran interaktif • Discovery Learning • SD Negeri 2 Lasusua</p>
+    </div>
+    <div class="tools">
+      <span class="pill" title="Bintang yang kamu kumpulkan">⭐ <b id="starTotal">0</b> / <span id="starMax">19</span></span>
+      <button class="pill btnp" id="guruBtn" aria-pressed="false">👩‍🏫 Mode Guru</button>
+    </div>
+  </header>
+
+  <nav class="steps" id="steps" aria-label="Langkah pembelajaran"></nav>
+
+  <!-- 1 AMATI -->
+  <section class="panel" id="p0">
+    <div class="card">
+      <h2>1. Amati: Cerita dari Kelas 4</h2>
+      <p class="sub">Simak ceritanya, lihat gambarnya, lalu jawab pertanyaan di setiap bagian. Belum ada jawaban salah!</p>
+      <div class="stage" id="stage"></div>
+      <div class="nav"><button class="btn ghost" id="sPrev">⬅ Sebelumnya</button><button class="btn" id="sNext">Lanjut ➡</button></div>
+      <div id="reactBox" style="display:none">
+        <h3 style="margin-top:18px">Apa yang kamu rasakan setelah mendengar cerita ini?</h3>
+        <div class="reacts" id="reacts"></div>
+        <div id="reactMsg"></div>
+      </div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Integrasi Multimedia &amp; Akses Internet.</b> Tayangkan dulu video dari Ruang Murid (Rumah Pendidikan), lalu gunakan cerita ini. Biarkan murid mengamati lebih dulu; jangan menjelaskan konsep sebelum mereka bertanya.</div>
+  </section>
+
+  <!-- 2 TANYA -->
+  <section class="panel" id="p1">
+    <div class="card">
+      <h2>2. Tanya: Apa Masalahnya?</h2>
+      <p class="sub">Baca masalah di kelas kita, lalu buat dugaan sementaramu.</p>
+      <div class="callout rose"><b>Masalah kelas kita:</b> Di kelas kita ada tugas piket, jadwal belajar, dan aturan bersama. Ada teman yang merasa berhak memakai alat tulis dan kursi dengan nyaman, tetapi lupa merapikannya. Ada pula yang ingin bermain saat jam belajar. Bagaimana kita menyelesaikannya supaya semua teman tetap mendapat haknya dan kewajiban dijalankan dengan baik?</div>
+      <h3>Pertanyaan untuk dipikirkan</h3>
+      <div class="chips"><span class="chip">1. Apa itu hak dan kewajiban?</span><span class="chip">2. Mana hak, mana kewajiban?</span><span class="chip">3. Apa akibatnya jika hanya menuntut hak?</span><span class="chip">4. Proyek apa yang bisa kita buat?</span></div>
+      <h3 style="margin-top:18px">Dugaan sementaramu: tap satu pilihan</h3>
+      <div id="hypo"></div>
+      <div id="hypoMsg"></div>
+      <div class="nav"><button class="btn ghost" data-go="0">⬅ Kembali</button><button class="btn" data-go="2">Cari datanya ➡</button></div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Anotasi dan Menulis Digital.</b> Catat pertanyaan dan dugaan murid pada layar dengan pen digital. Terima semua dugaan; jangan dikoreksi dulu. Dugaan akan dibuktikan di langkah 5.</div>
+  </section>
+
+  <!-- 3 KUMPULKAN -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h2>3. Kumpulkan Data: Pilah Kartu Situasi</h2>
+      <p class="sub">Seret setiap kartu ke kolom <b>HAK</b> atau <b>KEWAJIBAN</b>. Bisa juga tap kartunya, lalu tap kolomnya. Beberapa teman boleh menyeret sekaligus!</p>
+      <div class="prog"><i id="sortProg"></i></div>
+      <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-top:4px"><span id="sortTxt">0 dari 10 kartu tepat</span><span><button class="btn ghost sm" id="sortReset">🔄 Acak ulang</button></span></div>
+      <div class="sortwrap">
+        <div class="zone hak" data-zone="h" id="zHak"><h3>🎁 HAK <span class="cnt" id="cH">0</span></h3><div class="sub" style="margin:0 0 6px;font-size:14px">Sesuatu yang patut kita terima</div><div class="list" id="lH"></div></div>
+        <div class="zone kew" data-zone="k" id="zKew"><h3>💪 KEWAJIBAN <span class="cnt" id="cK">0</span></h3><div class="sub" style="margin:0 0 6px;font-size:14px">Sesuatu yang harus kita lakukan</div><div class="list" id="lK"></div></div>
+      </div>
+      <div class="tray" id="tray"></div>
+      <div id="sortDone"></div>
+      <div class="nav"><button class="btn ghost" data-go="1">⬅ Kembali</button><button class="btn" data-go="3">Olah datanya ➡</button></div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Layar Sentuh Multi-Touch.</b> Undang 2 sampai 3 murid maju bersamaan menyeret kartu. Kelompok mencatat hasil pada LKPD Kegiatan 1. Setelah selesai, minta murid menyebut pola di tiap kolom.</div>
+  </section>
+
+  <!-- 4 OLAH -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h2>4. Olah Data: Cari Polanya</h2>
+      <p class="sub">Pilih alat bantu: timbangan keseimbangan atau peta konsep.</p>
+      <div class="seg" id="seg"><button class="on" data-v="tim">⚖️ Timbangan</button><button data-v="map">🗺️ Peta Konsep</button></div>
+
+      <div id="vTim" style="margin-top:14px">
+        <div class="callout amber">Tap kartu <b>hak</b> (kiri) dan <b>kewajiban</b> (kanan) untuk menaruhnya di piringan. Coba buat timbangan <b>seimbang</b>!</div>
+        <div class="scalebox">
+          <svg viewBox="0 0 400 270" role="img" aria-label="Timbangan hak dan kewajiban">
+            <rect x="150" y="236" width="100" height="14" rx="7" fill="#d98a0b"/>
+            <rect x="193" y="70" width="14" height="170" rx="6" fill="#8a5600"/>
+            <g id="beam" style="transform-origin:200px 70px;transition:transform .8s cubic-bezier(.3,1.5,.5,1)">
+              <rect x="66" y="64" width="268" height="12" rx="6" fill="#d98a0b"/>
+            </g>
+            <circle cx="200" cy="70" r="11" fill="#0f766e"/>
+            <g id="panL" style="transition:transform .8s cubic-bezier(.3,1.5,.5,1)">
+              <line x1="0" y1="0" x2="-48" y2="74" stroke="#8a5600" stroke-width="3"/><line x1="0" y1="0" x2="48" y2="74" stroke="#8a5600" stroke-width="3"/>
+              <rect x="-60" y="74" width="120" height="12" rx="6" fill="#d98a0b"/>
+              <text id="tL" x="0" y="66" text-anchor="middle" font-size="19"></text>
+              <text x="0" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#d98a0b">HAK</text>
+            </g>
+            <g id="panR" style="transition:transform .8s cubic-bezier(.3,1.5,.5,1)">
+              <line x1="0" y1="0" x2="-48" y2="74" stroke="#0b4f4a" stroke-width="3"/><line x1="0" y1="0" x2="48" y2="74" stroke="#0b4f4a" stroke-width="3"/>
+              <rect x="-60" y="74" width="120" height="12" rx="6" fill="#0f766e"/>
+              <text id="tR" x="0" y="66" text-anchor="middle" font-size="19"></text>
+              <text x="0" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#0f766e">KEWAJIBAN</text>
+            </g>
+          </svg>
+          <div>
+            <div class="pairrow" style="font-weight:800;color:var(--muted);font-size:13px"><span style="color:var(--amber)">HAK</span><span></span><span style="color:var(--teal)">KEWAJIBAN</span></div>
+            <div id="pairs"></div>
+          </div>
+        </div>
+        <div id="timMsg" class="callout teal">Pilih kartu untuk mulai menimbang.</div>
+      </div>
+
+      <div id="vMap" style="display:none;margin-top:14px">
+        <div class="callout amber">Tap setiap cabang untuk membuka isinya. Buka kelima cabang untuk melengkapi peta konsepmu.</div>
+        <div class="mapbox" id="mapbox"></div>
+        <div class="detail card" id="mapDetail" style="margin-top:12px"><span class="sub">Tap salah satu cabang di atas.</span></div>
+      </div>
+
+      <div class="nav"><button class="btn ghost" data-go="2">⬅ Kembali</button><button class="btn" data-go="4">Buktikan ➡</button></div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Anotasi, Board Kolaboratif.</b> Kelompok menyusun peta konsep di board digital atau kertas (LKPD Kegiatan 2). Diferensiasi: kelompok yang butuh dampingan mulai dari timbangan; kelompok mahir diminta menambah contoh baru pada tiap cabang.</div>
+  </section>
+
+  <!-- 5 BUKTIKAN -->
+  <section class="panel" id="p4">
+    <div class="card">
+      <h2>5. Buktikan: Uji Pemahamanmu</h2>
+      <p class="sub">Jawab 5 pertanyaan. Setiap jawaban benar memberi 1 bintang.</p>
+      <div id="quiz"></div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Multi-Touch &amp; Anotasi; Ruang Murid.</b> Cocokkan temuan murid dengan buku digital Ruang Murid, luruskan miskonsepsi, dan lanjutkan dengan bank soal di Ruang Murid sebagai penguatan.</div>
+  </section>
+
+  <!-- 6 SIMPULKAN -->
+  <section class="panel" id="p5">
+    <div class="card">
+      <h2>6. Simpulkan: Janji Kelas</h2>
+      <p class="sub">Pilih janji yang akan kelompokmu laksanakan, lalu buat posternya.</p>
+      <div class="callout teal"><b>Kesimpulan kita:</b>
+        <ul style="margin:6px 0 0;padding-left:20px">
+          <li><b>Hak</b> adalah sesuatu yang patut kita terima dan miliki.</li>
+          <li><b>Kewajiban</b> adalah sesuatu yang harus kita lakukan dengan penuh tanggung jawab.</li>
+          <li>Hak dan kewajiban harus <b>seimbang</b>, dan hak orang lain wajib kita hormati.</li>
+        </ul>
+      </div>
+      <h3 style="margin-top:14px">Pilih janji kelompokmu</h3>
+      <div class="pledges" id="pledges"></div>
+      <div class="field"><input id="teamName" maxlength="40" placeholder="Nama kelompok, contoh: Kelompok Pelangi"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="mkPoster">🎨 Buat Poster Janji</button>
+        <button class="btn alt" id="prPoster">🖨️ Cetak</button>
+        <button class="btn ghost" id="cpPoster">📋 Salin Teks</button>
+      </div>
+      <div id="printzone"></div>
+      <div id="finalBox"></div>
+      <div class="nav"><button class="btn ghost" data-go="4">⬅ Kembali</button><button class="btn ghost" id="restart">🔁 Mulai dari awal</button></div>
+    </div>
+    <div class="tip"><b>Panduan guru • PID: Penyimpanan dan Berbagi Dokumen.</b> Simpan hasil dan tangkapan layar, bagikan kepada murid sebagai bahan belajar lanjutan. Murid melanjutkan proyek di rumah dan kelas, lalu mengerjakan bank soal Ruang Murid dan mengisi refleksi.</div>
+  </section>
+
+  <div class="timerbox" id="timerbox"><span>⏱ Waktu disarankan:</span><span class="t" id="tmr">00:00</span><button class="btn sm" id="tmStart">▶ Mulai</button><button class="btn ghost sm" id="tmReset">⟲ Atur ulang</button><span id="tmNote" style="font-size:14px;color:var(--muted)"></span></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const store={
+  get(k,d){try{const v=localStorage.getItem('hk26:'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('hk26:'+k,JSON.stringify(v))}catch(e){}}
+};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const MAXS={cerita:1,kartu:10,timbangan:1,peta:1,kuis:5,janji:1};
+const stars=store.get('stars',{});
+const total=()=>Object.values(stars).reduce((a,b)=>a+b,0);
+function updStars(){$('#starTotal').textContent=total();$('#starMax').textContent=Object.values(MAXS).reduce((a,b)=>a+b,0)}
+function award(k,n){if((stars[k]||0)<n){stars[k]=n;store.set('stars',stars);updStars();return true}return false}
+let toastT;
+function toast(m,kind){const t=$('#toast');t.textContent=m;t.className='toast show '+(kind||'');clearTimeout(toastT);toastT=setTimeout(()=>t.className='toast',2200)}
+function celebrate(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const em=['⭐','🎉','✨','🌟','👏'];
+  for(let i=0;i<26;i++){const s=document.createElement('span');s.className='conf';s.textContent=em[i%em.length];
+    s.style.left=Math.random()*100+'vw';s.style.animationDelay=(Math.random()*.5)+'s';s.style.fontSize=(18+Math.random()*18)+'px';
+    document.body.appendChild(s);setTimeout(()=>s.remove(),2800)}
+}
+
+/* ---------- tab & timer ---------- */
+const TABS=[{l:'Amati',s:'Stimulation',t:8},{l:'Tanya',s:'Problem Statement',t:6},{l:'Kumpulkan',s:'Data Collection',t:14},{l:'Olah',s:'Data Processing',t:10},{l:'Buktikan',s:'Verification',t:7},{l:'Simpulkan',s:'Generalization',t:5}];
+let cur=0;const visited=new Set([0]);
+const stepsEl=$('#steps');
+TABS.forEach((t,i)=>{const b=document.createElement('button');b.className='step';b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+t.l+'<small>'+t.s+'</small></span>';b.addEventListener('click',()=>show(i));stepsEl.appendChild(b)});
+function show(i){
+  cur=i;visited.add(i);
+  $$('.panel').forEach((p,k)=>p.classList.toggle('active',k===i));
+  $$('.step').forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.toggle('visited',visited.has(k))});
+  $$('.step')[i].scrollIntoView({inline:'center',block:'nearest'});
+  resetTimer();window.scrollTo({top:0,behavior:'smooth'});
+  if(i===4)renderQuiz(true); if(i===5)updPledgeUI();
+}
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>show(+b.dataset.go)));
+let tm=null,left=0,run=false;
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function drawTimer(){$('#tmr').textContent=fmt(Math.max(left,0));$('#timerbox').classList.toggle('late',left<=0)}
+function resetTimer(){clearInterval(tm);run=false;left=TABS[cur].t*60;$('#tmStart').textContent='▶ Mulai';$('#tmNote').textContent='Sintak '+(cur+1)+': '+TABS[cur].l+' ('+TABS[cur].t+' menit)';drawTimer()}
+$('#tmStart').addEventListener('click',()=>{
+  if(run){clearInterval(tm);run=false;$('#tmStart').textContent='▶ Lanjut';return}
+  run=true;$('#tmStart').textContent='⏸ Jeda';
+  tm=setInterval(()=>{left--;drawTimer();if(left===0){toast('⏰ Waktu sintak habis','bad')}},1000);
+});
+$('#tmReset').addEventListener('click',resetTimer);
+const guruBtn=$('#guruBtn');
+function setGuru(on){document.body.classList.toggle('guru',on);guruBtn.classList.toggle('on',on);guruBtn.setAttribute('aria-pressed',on);store.set('guru',on)}
+guruBtn.addEventListener('click',()=>setGuru(!document.body.classList.contains('guru')));
+
+/* ---------- 1 cerita ---------- */
+const SC=[
+ {e:'🏫✋✋✋',t:'Pagi di kelas 4',p:'Bu Guru bertanya, “Siapa yang ingin kelas kita bersih dan nyaman?” Semua murid mengangkat tangan.',q:'Apa yang kamu lihat? Apa yang kamu rasakan?'},
+ {e:'🧹😅',t:'Saatnya piket',p:'Giliran piket tiba. Doni pura-pura sibuk. “Aku capek, biar yang lain saja,” katanya.',q:'Tugas apa yang tidak dijalankan Doni?'},
+ {e:'✏️📚😟',t:'Alat tulis berserakan',p:'Rina ingin belajar dengan nyaman, tetapi mejanya penuh alat tulis yang tidak dirapikan temannya. Pensil Rina pun hilang.',q:'Hak siapa yang terganggu? Mengapa?'},
+ {e:'🗑️🙁',t:'Kelas jadi tidak nyaman',p:'Sampah menumpuk, lantai kotor, dan semua murid sulit berkonsentrasi belajar.',q:'Menurutmu, apa penyebab masalah ini?'}
+];
+let sc=0;
+function drawScene(){
+  const s=SC[sc];
+  $('#stage').innerHTML='<div class="big" aria-hidden="true">'+s.e+'</div><h3>'+s.t+'</h3><p style="max-width:620px;margin:6px auto">'+s.p+'</p><div class="q">💭 '+s.q+'</div><div class="dots">'+SC.map((_,i)=>'<i class="'+(i===sc?'on':'')+'"></i>').join('')+'</div>';
+  $('#sPrev').disabled=sc===0;
+  $('#sNext').textContent=sc===SC.length-1?'Selesai ✔':'Lanjut ➡';
+}
+$('#sPrev').addEventListener('click',()=>{if(sc>0){sc--;drawScene()}});
+$('#sNext').addEventListener('click',()=>{
+  if(sc<SC.length-1){sc++;drawScene();return}
+  $('#reactBox').style.display='block';$('#reactBox').scrollIntoView({behavior:'smooth',block:'center'});
+});
+const REACT=[['😟','Sedih'],['😠','Kesal'],['🤔','Bingung'],['💡','Ingin membantu']];
+$('#reacts').innerHTML=REACT.map((r,i)=>'<button class="react" data-i="'+i+'"><span>'+r[0]+'</span>'+r[1]+'</button>').join('');
+$$('.react').forEach(b=>b.addEventListener('click',()=>{
+  $$('.react').forEach(x=>x.classList.toggle('sel',x===b));
+  $('#reactMsg').innerHTML='<div class="callout teal">Perasaanmu wajar. Mari kita cari tahu masalahnya bersama.<div style="margin-top:10px"><button class="btn" data-go2="1">Lanjut: Tanya ➡</button></div></div>';
+  $('[data-go2]').addEventListener('click',()=>show(1));
+  if(award('cerita',1)){toast('⭐ +1 bintang','ok')}
+}));
+drawScene();
+
+/* ---------- 2 dugaan ---------- */
+const HY=[
+ ['A','Hak dan kewajiban harus berjalan seimbang.'],
+ ['B','Hak lebih penting daripada kewajiban.'],
+ ['C','Kewajiban hanya untuk orang dewasa.']
+];
+let dugaan=store.get('dugaan',null);
+function drawHypo(){
+  $('#hypo').innerHTML=HY.map((h,i)=>'<button class="opt'+(dugaan===i?' sel':'')+'" data-i="'+i+'"><span class="k">'+h[0]+'</span>'+h[1]+'</button>').join('');
+  $$('#hypo .opt').forEach(b=>b.addEventListener('click',()=>{dugaan=+b.dataset.i;store.set('dugaan',dugaan);drawHypo()}));
+  $('#hypoMsg').innerHTML=dugaan===null?'':'<div class="callout amber">Dugaanmu dicatat! Ini baru dugaan sementara. Kita buktikan di langkah 5.</div>';
+}
+drawHypo();
+
+/* ---------- 3 pilah kartu (drag & tap) ---------- */
+const CARDS=[['📖','Mendapat pendidikan di sekolah','h'],['🧹','Mengerjakan piket kelas sesuai jadwal','k'],['⚽','Bermain bersama teman setelah belajar','h'],['✏️','Merapikan alat tulis setelah dipakai','k'],['❤️','Mendapat kasih sayang dari orang tua','h'],['🏠','Membantu orang tua di rumah','k'],['🗣️','Mengemukakan pendapat dalam diskusi kelas','h'],['🙏','Menghormati guru dan teman','k'],['🛡️','Mendapat rasa aman di sekolah','h'],['📋','Menaati tata tertib sekolah','k']];
+let selected=null,placed=0,cH=0,cK=0;
+const zones={h:$('#zHak'),k:$('#zKew')};
+function zoneAt(x,y){for(const k in zones){const r=zones[k].getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return k}return null}
+function hot(k){for(const z in zones)zones[z].classList.toggle('hot',z===k)}
+function place(el,zone){
+  if(el.dataset.t===zone){
+    el.dataset.placed='1';el.classList.remove('selected','dragging');el.removeAttribute('style');el.classList.add('placed');
+    $(zone==='h'?'#lH':'#lK').appendChild(el);
+    if(selected===el)selected=null;
+    placed++;zone==='h'?cH++:cK++;
+    $('#cH').textContent=cH;$('#cK').textContent=cK;
+    $('#sortProg').style.width=(placed*10)+'%';$('#sortTxt').textContent=placed+' dari 10 kartu tepat';
+    stars.kartu=Math.max(stars.kartu||0,placed);store.set('stars',stars);updStars();
+    toast('Tepat! ✅','ok');
+    if(placed===10){
+      celebrate();
+      $('#sortDone').innerHTML='<div class="callout ok"><b>Hebat, semua kartu tepat! 🎉</b><br>Coba temukan polanya: apa kesamaan kartu di kolom HAK? Apa kesamaan kartu di kolom KEWAJIBAN?<div style="margin-top:10px"><button class="btn alt sm" id="revealPattern">💡 Lihat polanya</button></div><div id="pat"></div></div>';
+      $('#revealPattern').addEventListener('click',()=>{$('#pat').innerHTML='<p style="margin:10px 0 0"><b>Hak</b> adalah sesuatu yang kita <b>terima atau dapatkan</b>. <b>Kewajiban</b> adalah sesuatu yang harus kita <b>lakukan</b> dengan tanggung jawab.</p>'});
+    }
+  }else{
+    el.classList.remove('dragging');el.removeAttribute('style');
+    el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),450);
+    toast('Belum tepat. Apakah ini sesuatu yang kita terima, atau yang harus kita lakukan?','bad');
+  }
+}
+function wire(el){
+  let st=null;
+  el.addEventListener('pointerdown',e=>{
+    if(el.dataset.placed)return;
+    try{el.setPointerCapture(e.pointerId)}catch(_){}
+    const r=el.getBoundingClientRect();
+    st={id:e.pointerId,x0:e.clientX,y0:e.clientY,dx:e.clientX-r.left,dy:e.clientY-r.top,w:r.width,h:r.height,moved:false,ph:null};
+  });
+  el.addEventListener('pointermove',e=>{
+    if(!st||e.pointerId!==st.id)return;
+    if(!st.moved&&Math.hypot(e.clientX-st.x0,e.clientY-st.y0)>7){
+      st.moved=true;const ph=document.createElement('div');ph.className='ph';ph.style.height=st.h+'px';el.before(ph);st.ph=ph;
+      el.classList.add('dragging');el.style.width=st.w+'px';
+    }
+    if(st.moved){el.style.left=(e.clientX-st.dx)+'px';el.style.top=(e.clientY-st.dy)+'px';hot(zoneAt(e.clientX,e.clientY))}
+  });
+  const end=e=>{
+    if(!st||e.pointerId!==st.id)return;
+    const s=st;st=null;hot(null);
+    if(s.moved){
+      if(s.ph)s.ph.remove();
+      const z=e.type==='pointercancel'?null:zoneAt(e.clientX,e.clientY);
+      if(z)place(el,z);else{el.classList.remove('dragging');el.removeAttribute('style')}
+    }else{
+      if(selected&&selected!==el)selected.classList.remove('selected');
+      selected=el.classList.toggle('selected')?el:null;
+    }
+  };
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+}
+$$('#zHak,#zKew').forEach(z=>z.addEventListener('click',e=>{if(selected&&!selected.dataset.placed){place(selected,z.dataset.zone)}}));
+function buildSort(){
+  placed=0;cH=0;cK=0;selected=null;
+  $('#lH').innerHTML='';$('#lK').innerHTML='';$('#cH').textContent=0;$('#cK').textContent=0;
+  $('#sortProg').style.width='0';$('#sortTxt').textContent='0 dari 10 kartu tepat';$('#sortDone').innerHTML='';
+  const tray=$('#tray');tray.innerHTML='';
+  shuffle(CARDS).forEach(c=>{
+    const d=document.createElement('div');d.className='dcard';d.dataset.t=c[2];
+    d.innerHTML='<span class="e">'+c[0]+'</span><span>'+c[1]+'</span>';
+    wire(d);tray.appendChild(d);
+  });
+}
+$('#sortReset').addEventListener('click',buildSort);
+buildSort();
+
+/* ---------- 4a timbangan ---------- */
+const PAIRS=[
+ {h:['📚','Belajar di kelas yang nyaman'],k:['🧹','Menjaga kebersihan kelas'],j:'Kami berhak belajar di kelas yang nyaman, karena itu kami berjanji menjaga kebersihan kelas.'},
+ {h:['⚽','Bermain bersama teman'],k:['🧸','Merapikan alat dan mainan'],j:'Kami berhak bermain bersama teman, karena itu kami berjanji merapikan alat dan mainan setelah dipakai.'},
+ {h:['🗣️','Menyampaikan pendapat'],k:['👂','Mendengarkan teman'],j:'Kami berhak menyampaikan pendapat, karena itu kami berjanji mendengarkan pendapat teman dengan sopan.'},
+ {h:['🛡️','Mendapat rasa aman'],k:['🤝','Tidak mengganggu teman'],j:'Kami berhak merasa aman, karena itu kami berjanji tidak mengganggu dan menyakiti teman.'},
+ {h:['❤️','Kasih sayang orang tua'],k:['🏠','Membantu orang tua'],j:'Kami berhak mendapat kasih sayang orang tua, karena itu kami berjanji membantu orang tua sesuai kemampuan.'}
+];
+const H=new Set(),K=new Set();
+$('#pairs').innerHTML=PAIRS.map((p,i)=>'<div class="pairrow"><button class="wchip h" data-i="'+i+'">'+p.h[0]+' '+p.h[1]+'</button><span class="mid">↔</span><button class="wchip k" data-i="'+i+'">'+p.k[0]+' '+p.k[1]+'</button></div>').join('');
+function drawScale(){
+  const diff=K.size-H.size,ang=Math.max(-18,Math.min(18,diff*6)),th=ang*Math.PI/180,L=134;
+  $('#beam').style.transform='rotate('+ang+'deg)';
+  const lx=200-L*Math.cos(th),ly=70-L*Math.sin(th),rx=200+L*Math.cos(th),ry=70+L*Math.sin(th);
+  $('#panL').style.transform='translate('+lx+'px,'+ly+'px)';
+  $('#panR').style.transform='translate('+rx+'px,'+ry+'px)';
+  $('#tL').textContent=[...H].map(i=>PAIRS[i].h[0]).join('');
+  $('#tR').textContent=[...K].map(i=>PAIRS[i].k[0]).join('');
+  const m=$('#timMsg');
+  if(!H.size&&!K.size){m.className='callout teal';m.textContent='Pilih kartu untuk mulai menimbang.'}
+  else if(H.size===K.size){m.className='callout ok';m.innerHTML='<b>⚖️ Seimbang!</b> Hak dinikmati, kewajiban dijalankan, dan kelas menjadi nyaman untuk semua.';
+    if(H.size>=3&&award('timbangan',1)){celebrate();toast('⭐ +1 bintang','ok')}}
+  else if(H.size>K.size){m.className='callout bad';m.innerHTML='<b>Hak lebih berat.</b> Kalau hanya menuntut hak tanpa menjalankan kewajiban, teman lain dirugikan. Tambahkan kewajibanmu!'}
+  else{m.className='callout amber';m.innerHTML='<b>Kewajiban lebih berat.</b> Kamu rajin menjalankan kewajiban. Jangan lupa kamu juga berhak bermain dan beristirahat.'}
+}
+$$('.wchip').forEach(b=>b.addEventListener('click',()=>{
+  const i=+b.dataset.i,S=b.classList.contains('h')?H:K;
+  S.has(i)?S.delete(i):S.add(i);b.classList.toggle('on',S.has(i));drawScale();
+}));
+drawScale();
+
+/* ---------- 4b peta konsep ---------- */
+const MAPN=[
+ {id:'hak',x:20,y:20,t:'📘 Pengertian Hak',c:'<h3>Hak</h3><p style="margin:0">Sesuatu yang <b>patut kita terima dan miliki</b>. Contoh: mendapat pendidikan, bermain, kasih sayang, dan rasa aman.</p>'},
+ {id:'kew',x:80,y:20,t:'📗 Pengertian Kewajiban',c:'<h3>Kewajiban</h3><p style="margin:0">Sesuatu yang <b>harus kita lakukan</b> dengan penuh tanggung jawab. Contoh: belajar dengan tekun, piket, dan menaati tata tertib.</p>'},
+ {id:'rum',x:16,y:80,t:'🏠 Di Rumah',c:'<h3>Di rumah</h3><div class="two"><div class="callout amber" style="margin:0"><b>Hak</b><br>Kasih sayang, makanan dan tempat tinggal, bermain dan beristirahat.</div><div class="callout teal" style="margin:0"><b>Kewajiban</b><br>Membantu orang tua, merapikan tempat tidur dan mainan, menghormati keluarga.</div></div>'},
+ {id:'sek',x:84,y:80,t:'🏫 Di Sekolah',c:'<h3>Di sekolah</h3><div class="two"><div class="callout amber" style="margin:0"><b>Hak</b><br>Mendapat pendidikan dan bimbingan guru, rasa aman, menyampaikan pendapat.</div><div class="callout teal" style="margin:0"><b>Kewajiban</b><br>Menaati tata tertib, melaksanakan piket, menghormati guru dan teman.</div></div>'},
+ {id:'aki',x:50,y:88,t:'⚠️ Jika Tidak Seimbang',c:'<h3>Jika tidak seimbang</h3><p style="margin:0">Jika hanya menuntut hak, orang lain dirugikan dan kelas tidak nyaman. Jika hanya menjalankan kewajiban tanpa menikmati hak, kita bisa kelelahan. <b>Seimbang itu disiplin.</b></p>'}
+];
+const seen=new Set();
+(function(){
+  const mb=$('#mapbox');
+  let svg='<svg aria-hidden="true">'+MAPN.map(n=>'<line x1="50%" y1="48%" x2="'+n.x+'%" y2="'+n.y+'%"/>').join('')+'</svg>';
+  mb.innerHTML=svg+'<div class="node center" style="left:50%;top:48%">⚖️ HAK DAN KEWAJIBAN</div>'+MAPN.map(n=>'<button class="node" data-id="'+n.id+'" style="left:'+n.x+'%;top:'+n.y+'%">'+n.t+'</button>').join('');
+  $$('.node[data-id]',mb).forEach(b=>b.addEventListener('click',()=>{
+    const n=MAPN.find(x=>x.id===b.dataset.id);
+    $$('.node[data-id]',mb).forEach(x=>x.classList.remove('cur'));
+    b.classList.add('cur','seen');seen.add(n.id);
+    $('#mapDetail').innerHTML=n.c+'<div class="sub" style="margin:8px 0 0;font-size:14px">Dibuka: '+seen.size+' dari '+MAPN.length+' cabang</div>';
+    if(seen.size===MAPN.length&&award('peta',1)){celebrate();toast('🗺️ Peta konsepmu lengkap! ⭐ +1','ok')}
+  }));
+})();
+$$('#seg button').forEach(b=>b.addEventListener('click',()=>{
+  $$('#seg button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#vTim').style.display=b.dataset.v==='tim'?'block':'none';
+  $('#vMap').style.display=b.dataset.v==='map'?'block':'none';
+}));
+
+/* ---------- 5 kuis ---------- */
+const QS=[
+ {q:'Contoh hak anak di sekolah adalah ...',o:['mendapat pelajaran dari guru','membuang sampah sembarangan','datang terlambat','mengotori kelas'],e:'Mendapat pelajaran adalah sesuatu yang patut kita terima, jadi itu hak.'},
+ {q:'Yang termasuk kewajiban murid adalah ...',o:['menaati tata tertib sekolah','bermain sepuasnya','meminta hadiah','menolak belajar'],e:'Menaati tata tertib adalah sesuatu yang harus kita lakukan, jadi itu kewajiban.'},
+ {q:'Dina ingin kelas bersih tetapi tidak mau piket. Sikap Dina belum tepat karena ...',o:['hak dan kewajiban harus dijalankan seimbang','piket bukan tugas murid','kelas bersih bukan hak siapa pun','hanya guru yang wajib membersihkan'],e:'Ingin menikmati kelas bersih (hak) harus diimbangi dengan ikut piket (kewajiban).'},
+ {q:'Hak dan kewajiban harus dilaksanakan secara ...',o:['seimbang','sesuka hati','salah satu saja','menunggu disuruh'],e:'Hak dan kewajiban berjalan beriringan dan harus seimbang.'},
+ {q:'Wujud kewajiban anak di rumah adalah ...',o:['membantu orang tua sesuai kemampuan','menuntut uang jajan','tidur sepanjang hari','tidak mau merapikan kamar'],e:'Membantu orang tua sesuai kemampuan adalah tanggung jawab anak di rumah.'}
+];
+let qi=0,qs=0,qOrder=[],qDone=false;
+function renderQuiz(reset){
+  if(reset){qi=0;qs=0;qDone=false;qOrder=QS.map(q=>shuffle(q.o.map((t,i)=>({t,ok:i===0}))))}
+  const box=$('#quiz');
+  if(qi>=QS.length){return finishQuiz()}
+  const q=QS[qi];qDone=false;
+  box.innerHTML='<div class="qno">Pertanyaan '+(qi+1)+' dari '+QS.length+' • Skor: '+qs+'</div><div class="prog"><i style="width:'+(qi/QS.length*100)+'%"></i></div><div class="qtext">'+q.q+'</div><div id="opts"></div><div id="fb"></div><div class="nav" style="justify-content:flex-end"><button class="btn" id="qNext" style="display:none">'+(qi===QS.length-1?'Lihat hasil 🎯':'Berikutnya ➡')+'</button></div>';
+  $('#opts').innerHTML=qOrder[qi].map((o,i)=>'<button class="opt" data-i="'+i+'"><span class="k">'+'ABCD'[i]+'</span>'+o.t+'</button>').join('');
+  $$('#opts .opt').forEach(b=>b.addEventListener('click',()=>{
+    if(qDone)return;qDone=true;
+    const o=qOrder[qi][+b.dataset.i];
+    $$('#opts .opt').forEach((x,i)=>{if(qOrder[qi][i].ok)x.classList.add('ok')});
+    if(o.ok){qs++;b.classList.add('ok');$('#fb').innerHTML='<div class="callout ok"><b>Benar! 🎉</b> '+q.e+'</div>';toast('⭐ +1 bintang','ok')}
+    else{b.classList.add('bad');$('#fb').innerHTML='<div class="callout bad"><b>Belum tepat.</b> '+q.e+'</div>'}
+    stars.kuis=qs;store.set('stars',stars);updStars();
+    $('#qNext').style.display='inline-block';
+  }));
+  $('#qNext').addEventListener('click',()=>{qi++;renderQuiz(false)});
+}
+function finishQuiz(){
+  const s='⭐'.repeat(qs)+'☆'.repeat(QS.length-qs);
+  const msg=qs===5?'Luar biasa! Kamu sudah paham hak dan kewajiban.':qs>=3?'Bagus! Sedikit lagi kamu mahir.':'Ayo pelajari lagi bersama teman dan guru, lalu coba kembali.';
+  const dg=dugaan===null?'<div class="callout amber">Kamu belum membuat dugaan di langkah 2. Kembali ke langkah 2 jika ingin membuktikan dugaanmu.</div>'
+   :(dugaan===0?'<div class="callout ok"><b>Dugaanmu terbukti! ✅</b><br>Kamu menduga: “'+HY[0][1]+'” Setelah memilah kartu, menimbang, dan menjawab soal, terbukti bahwa hak dan kewajiban memang harus seimbang.</div>'
+   :'<div class="callout amber"><b>Dugaanmu perlu diperbaiki.</b><br>Kamu menduga: “'+HY[dugaan][1]+'” Setelah memilah kartu dan menimbang, kita menemukan bahwa <b>hak dan kewajiban harus berjalan seimbang</b>, dan keduanya berlaku untuk semua orang, termasuk anak-anak.</div>');
+  $('#quiz').innerHTML='<div style="text-align:center"><div class="stars">'+s+'</div><h3 style="margin-top:6px">Skormu: '+qs+' dari '+QS.length+'</h3><p>'+msg+'</p></div>'+dg+'<div class="nav"><button class="btn ghost" id="qAgain">🔁 Ulangi kuis</button><button class="btn" data-go="5">Simpulkan ➡</button></div>';
+  $('#qAgain').addEventListener('click',()=>renderQuiz(true));
+  $('#quiz [data-go]').addEventListener('click',()=>show(5));
+  if(qs===5)celebrate();
+}
+
+/* ---------- 6 janji & poster ---------- */
+let picks=store.get('picks',[0,1,2,3,4]);
+$('#teamName').value=store.get('team','')||'';
+function updPledgeUI(){
+  $('#pledges').innerHTML=PAIRS.map((p,i)=>'<label><input type="checkbox" data-i="'+i+'"'+(picks.includes(i)?' checked':'')+'><span><b>'+p.h[0]+' → '+p.k[0]+'</b> '+p.j+'</span></label>').join('');
+  $$('#pledges input').forEach(c=>c.addEventListener('change',()=>{
+    picks=$$('#pledges input').filter(x=>x.checked).map(x=>+x.dataset.i);store.set('picks',picks);
+  }));
+}
+updPledgeUI();
+$('#teamName').addEventListener('input',e=>store.set('team',e.target.value));
+function pledgeText(){
+  const name=$('#teamName').value.trim();
+  return 'JANJI KELAS 4'+(name?' - '+name:'')+'\n'+picks.map((i,n)=>(n+1)+'. '+PAIRS[i].j).join('\n')+'\nSD Negeri 2 Lasusua';
+}
+function makePoster(){
+  if(!picks.length){toast('Pilih minimal satu janji dulu','bad');return false}
+  const z=$('#printzone');z.innerHTML='';
+  const p=document.createElement('div');p.className='poster';
+  const a=document.createElement('div');a.className='ph1';a.textContent='HAK ⚖️ KEWAJIBAN SEIMBANG';
+  const h=document.createElement('h2');h.textContent='Janji Kelas 4';
+  const by=document.createElement('div');by.className='by';by.textContent=$('#teamName').value.trim()||'Kelompok kami';
+  const ol=document.createElement('ol');
+  picks.forEach(i=>{const li=document.createElement('li');li.textContent=PAIRS[i].j;ol.appendChild(li)});
+  const sg=document.createElement('div');sg.className='sig';sg.innerHTML='<div class="sign"></div>Tanda tangan anggota kelompok<br>SD Negeri 2 Lasusua • Pendidikan Pancasila Kelas 4';
+  p.append(a,h,by,ol,sg);z.appendChild(p);
+  z.scrollIntoView({behavior:'smooth',block:'center'});
+  if(award('janji',1)){celebrate();toast('🎨 Poster jadi! ⭐ +1','ok')}
+  $('#finalBox').innerHTML='<div class="callout teal" style="margin-top:14px"><b>Selesai! 🎉</b> Kamu mengumpulkan <b>'+total()+'</b> dari <b>'+Object.values(MAXS).reduce((x,y)=>x+y,0)+'</b> bintang. Langkah berikutnya: laksanakan janjimu di rumah dan di kelas, lalu kerjakan latihan di Ruang Murid.</div>';
+  return true;
+}
+$('#mkPoster').addEventListener('click',makePoster);
+$('#prPoster').addEventListener('click',()=>{
+  if(!$('#printzone .poster')&&!makePoster())return;
+  document.body.classList.add('print-poster');
+  try{window.print()}catch(e){toast('Cetak tidak tersedia di tampilan ini','bad')}
+  setTimeout(()=>document.body.classList.remove('print-poster'),500);
+});
+$('#cpPoster').addEventListener('click',async()=>{
+  if(!picks.length){toast('Pilih minimal satu janji dulu','bad');return}
+  try{await navigator.clipboard.writeText(pledgeText());toast('Teks janji disalin ✅','ok')}
+  catch(e){toast('Tidak bisa menyalin otomatis. Salin dari poster.','bad')}
+});
+$('#restart').addEventListener('click',()=>{
+  if(!confirm('Mulai dari awal? Bintang dan dugaanmu akan dihapus.'))return;
+  Object.keys(stars).forEach(k=>delete stars[k]);store.set('stars',stars);dugaan=null;store.set('dugaan',null);
+  seen.clear();H.clear();K.clear();$$('.wchip.on').forEach(x=>x.classList.remove('on'));$$('.node.seen,.node.cur').forEach(x=>x.classList.remove('seen','cur'));
+  $('#mapDetail').innerHTML='<span class="sub">Tap salah satu cabang di atas.</span>';
+  sc=0;drawScene();$('#reactBox').style.display='none';$('#reactMsg').innerHTML='';$$('.react').forEach(x=>x.classList.remove('sel'));
+  drawHypo();buildSort();drawScale();$('#printzone').innerHTML='';$('#finalBox').innerHTML='';updStars();visited.clear();show(0);
+});
+
+/* ---------- init ---------- */
+updStars();
+setGuru(!!store.get('guru',false));
+show(0);
+})();
+</script>
+</body>
+</html>
